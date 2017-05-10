@@ -1,5 +1,12 @@
-const router = require('../index');
+//const router = require('../index');
+var router = require('express').Router();
+var Hotel = require('../../models').Hotel;
 
-router.get('/', function (req, res, next) {
-    
+router.get('/', function(req, res){
+  Hotel.findAll({})
+    .then(function(hotelArr){
+      res.send(hotelArr);
+    })
 });
+
+module.exports = router;
