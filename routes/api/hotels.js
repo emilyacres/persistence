@@ -1,4 +1,3 @@
-//const router = require('../index');
 var router = require('express').Router();
 var Hotel = require('../../models').Hotel;
 
