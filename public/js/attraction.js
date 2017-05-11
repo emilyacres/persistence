@@ -76,7 +76,8 @@ var attractionModule = (function () {
 
     create: function (databaseAttraction) {
       return new Attraction(databaseAttraction);
-    }
+    },
+    show: Array.prototype.show
 
   };
 

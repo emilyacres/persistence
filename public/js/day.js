@@ -75,20 +75,28 @@ var dayModule = (function () {
     this.$button.addClass('current-day');
     $dayTitle.text('Day ' + this.number);
     // attractions UI
-     function show (attract) { attract.show(); }
+    function show (attraction) { attraction.show(); }
     $.ajax({
       method:'GET',
       url: '/api/days/' + this.number
     })
     .then(function(dataObj){
-      if (dataObj.hotel) show(dataObj.hotel);
-      dataObj.restaurants.forEach(show);
-      dataObj.activities.forEach(show);
-    })
-    // function show (attraction) { attraction.show(); }
-    // if (this.hotel) show(this.hotel);
-    // this.restaurants.forEach(show);
-    // this.activities.forEach(show);
+      console.log(dataObj)
+      if (dataObj.hotel) {
+        var hotel = attractionsModule.getEnhanced(dataObj.hotel);   
+      }
+      var restaurants = []
+      for (let i = 0 ; i < dataObj.restaurants.length ; i++) {
+        restaurants.push(attractionsModule.getEnhanced(dataObj.restaurants[i]));
+      }
+      var activities = []
+      for (let i = 0 ; i < dataObj.activities.length ; i++) {
+        activities.push(attractionsModule.getEnhanced(dataObj.activities[i]));
+      }
+      if (hotel) show(hotel);
+      if (restaurants) restaurants.forEach(show);
+      if (activities) activities.forEach(show);
+    });
   };
 
   Day.prototype.hide = function () {
@@ -162,13 +170,34 @@ var dayModule = (function () {
     // removing from the day object
     switch (attraction.type) {
       case 'hotel':
-        this.hotel = null;
+        $.ajax({
+          method: 'DELETE',
+          url: '/api/days/' + this.number + '/hotel'
+        })
+        .then(function(){
+          this.hotel = null;
+        })
+        .catch(console.error);
         break;
       case 'restaurant':
-        utilsModule.remove(this.restaurants, attraction);
+        $.ajax({
+          method: 'DELETE',
+          url: '/api/days/' + this.number + '/restaurants/' + attraction.id
+        })
+        .then(function(){
+          utilsModule.remove(this.restaurants, attraction);
+        })
+        .catch(console.error)
         break;
       case 'activity':
-        utilsModule.remove(this.activities, attraction);
+        $.ajax({
+          method: 'DELETE',
+          url: '/api/days/' + this.number + '/activities/' + attraction.id
+        })
+        .then(function(){
+          utilsModule.remove(this.activities, attraction);
+        })
+        .catch(console.error)
         break;
       default: console.error('bad type:', attraction);
     }

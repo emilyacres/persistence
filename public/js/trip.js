@@ -64,7 +64,7 @@ var tripModule = (function () {
       method: 'POST',
       url: '/api/days',
       data: {
-        number: days.length + 1
+        number: newDay.number
       }
     })
     .then(function(){

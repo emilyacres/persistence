@@ -29,13 +29,23 @@ router.get('/:id', function (req, res, next){
 
 //create new day
 router.post('/', function (req, res, next){
-    Day.create({
-        number: req.body.number
+    Day.findOne({
+        where: {
+            number: req.body.number
+        }
     })
-    .then(function (day){
-        res.send(day)
+    .then(function(data){
+        if (data) return
+        else {
+            Day.create({
+                number: req.body.number
+            })
+            .then(function (day){
+                res.send(day)
+            })
+            .catch(next);
+        }
     })
-    .catch(next);
 });
 
 //delete specific day
@@ -78,7 +88,7 @@ router.post('/:id/hotels', function (req, res, next){
     Day.findById(req.params.id)
     .then(function (day){
         console.log('got to router');
-       return day.setHotel(req.body.id)
+        return day.setHotel(req.body.id)
     })
     .then(function(data){
         res.send(data)
@@ -88,18 +98,48 @@ router.post('/:id/hotels', function (req, res, next){
 });
 
 //delete restaurant from specific day
-// router.put('/:id/restaurants', function (req, res, next){
-
-// });
+router.delete('/:id/restaurants/:attractionId', function (req, res, next){
+    Day.findById(req.params.id)
+    .then(function(day){
+        return day.({
+            where: {
+                restaurantId: req.params.attractionId
+            }
+        })
+    })
+    .then(function(restaurant){
+        restaurant.destroy()
+    })
+    .catch(console.error);
+});
 
 //delete activity from specific day
-router.put('/:id/activities', function (req, res, next){
-
+router.delete('/:id/activities/:attractionId', function (req, res, next){
+            console.log('HEYYY')
+    Day.findById(req.params.id)
+    .then(function(day){
+        return day.getActivity({
+            where: {
+                activityId: req.params.attractionId
+            }
+        })
+    })
+    .then(function(activity){
+        activity.destroy()
+    })
+    .catch(console.error);
 });
 
 //delete hotel from specific day
-router.put('/:id/hotels', function (req, res, next){
-
+router.delete('/:id/hotel', function (req, res, next){
+    Day.findById(req.params.id)
+    .then(function(day){
+        return day.getHotel()
+    })
+    .then(function(hotel){
+        hotel.destroy()
+    })
+    .catch(console.error)
 });
 
 
