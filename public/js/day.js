@@ -75,10 +75,20 @@ var dayModule = (function () {
     this.$button.addClass('current-day');
     $dayTitle.text('Day ' + this.number);
     // attractions UI
-    function show (attraction) { attraction.show(); }
-    if (this.hotel) show(this.hotel);
-    this.restaurants.forEach(show);
-    this.activities.forEach(show);
+     function show (attract) { attract.show(); }
+    $.ajax({
+      method:'GET',
+      url: '/api/days/' + this.number
+    })
+    .then(function(dataObj){
+      if (dataObj.hotel) show(dataObj.hotel);
+      dataObj.restaurants.forEach(show);
+      dataObj.activities.forEach(show);
+    })
+    // function show (attraction) { attraction.show(); }
+    // if (this.hotel) show(this.hotel);
+    // this.restaurants.forEach(show);
+    // this.activities.forEach(show);
   };
 
   Day.prototype.hide = function () {
@@ -105,6 +115,14 @@ var dayModule = (function () {
       case 'hotel':
         if (this.hotel) this.hotel.hide();
         this.hotel = attraction;
+        promisedAttraction =
+        $.ajax({
+            method: 'POST',
+            url: 'api/days/'+ this.number + '/hotels',
+            data: {
+              id: attraction.id
+            }
+        });
         break;
       case 'restaurant':
         utilsModule.pushUnique(this.restaurants, attraction);
@@ -120,6 +138,14 @@ var dayModule = (function () {
         break;
       case 'activity':
         utilsModule.pushUnique(this.activities, attraction);
+        promisedAttraction =
+        $.ajax({
+            method: 'POST',
+            url: 'api/days/'+ this.number + '/activities',
+            data: {
+              id: attraction.id
+            }
+        });
         break;
       default: console.error('bad type:', attraction);
     }

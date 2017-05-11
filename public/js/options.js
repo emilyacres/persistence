@@ -71,26 +71,6 @@ $(function () {
     }
 
     // what to do when the `+` button next to a `select` is clicked
-    // $optionsPanel.on('click', 'button[data-action="add"]', function () {
-    //     console.log('clicked');
-    //     var $select = $(this).siblings('select');
-    //     var type = $select.data('type'); // from HTML data-type attribute
-    //     var id = $select.find(':selected').val();
-    //     // get associated attraction and add it to the current day in the trip
-    //     var attraction = attractionsModule.getByTypeAndId(type, id);
-    //     tripModule.addToCurrent(attraction);
-
-    //     // $.ajax({
-    //     //     method: 'POST',
-    //     //     url: 'api/days/1/restaurants',
-    //     //     data: {
-    //     //         attraction: attraction
-    //     //     }
-    //     // })
-    //     // .then(function(data){
-    //     //     console.log("added to db");
-    //     // });
-    // });
 
     // what to do when the `+` button next to a `select` is clicked
     //console.log('attaching evt' );
@@ -102,13 +82,4 @@ $(function () {
         var attraction = attractionsModule.getByTypeAndId(type, id);
         tripModule.addToCurrent(attraction);
     });
-        // $.ajax({
-        //     method: 'POST',
-        //     url: 'api/days/1/restaurants',
-        //     data: attraction
-        // })
-        // .then(function(data){
-        //     console.log("added to db");
-        // });
-
 });
