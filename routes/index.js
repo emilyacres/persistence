@@ -30,5 +30,6 @@ router.use('/api/hotels', apiHotel);
 router.use('/api/restaurants', apiRestaurant);
 router.use('/api/activities', apiActivity);
 router.use('/api/days', apiDay);
+router.use('/api/days', apiDay);
 
 module.exports = router;

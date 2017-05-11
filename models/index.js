@@ -13,11 +13,21 @@ Day.belongsTo(Hotel);
 Day.belongsToMany(Restaurant, {through: 'day_restaurant'});
 Day.belongsToMany(Activity, {through: 'day_activity'});
 
+Day.belongsTo(Hotel);
+
+Day.belongsToMany(Restaurant, {through: 'day_restaurant'});
+
+Day.belongsToMany(Activity, {through: 'day_activity'});
+
 module.exports = {
 	db,
 	Place,
 	Hotel,
 	Restaurant,
 	Activity,
-  Day
+	Day
 };
+
+//.getHotel
+
+//.getRestaurants
