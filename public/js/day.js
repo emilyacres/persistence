@@ -25,7 +25,7 @@ var dayModule = (function () {
 
   // ~~~~~~~~~~~~~~~~~~~~~~~
     // If you follow the logic of `attractionsModule.getEnhanced` (try following it!), you will note that it depends on `loadEnhanceAttractions` to have run.
-    //Note that `loadEnhancedAttractions` is already being called for you in `/public/js/options.js` and that it utilizes another method given to us by the `attractionModule` (singular). 
+    //Note that `loadEnhancedAttractions` is already being called for you in `/public/js/options.js` and that it utilizes another method given to us by the `attractionModule` (singular).
   // ~~~~~~~~~~~~~~~~~~~~~~~
   function Day (data) {
     // for brand-new days
@@ -97,7 +97,9 @@ var dayModule = (function () {
     // Do not add an attraction to the page until you have added it to the DB.
     // es6 template literals might be helpful for the url route path for your AJAX request
   // ~~~~~~~~~~~~~~~~~~~~~~~
+
   Day.prototype.addAttraction = function (attraction) {
+    let promisedAttraction;
     // adding to the day object
     switch (attraction.type) {
       case 'hotel':
@@ -106,6 +108,15 @@ var dayModule = (function () {
         break;
       case 'restaurant':
         utilsModule.pushUnique(this.restaurants, attraction);
+        console.log(this);
+        promisedAttraction =
+        $.ajax({
+            method: 'POST',
+            url: 'api/days/'+ this.number + '/restaurants',
+            data: {
+              id: attraction.id
+            }
+        });
         break;
       case 'activity':
         utilsModule.pushUnique(this.activities, attraction);
