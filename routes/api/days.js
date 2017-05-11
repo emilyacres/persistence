@@ -27,7 +27,7 @@ router.post('/', function (req, res, next){
 
 //delete specific day
 router.put('/:id', function (req, res, next){
-    
+
 });
 
 //add restaurant to specific day
@@ -35,11 +35,12 @@ router.post('/:id/restaurants', function (req, res, next){
 
     Day.findById(req.params.id)
     .then(function (day){
-        day.addRestaurant({id: req.body.id})
-        .then(function(){
-            console.log('You added a restaurant')
-        })
-        .catch(console.error)
+        console.log('got to router');
+       return day.addRestaurant(req.body.id)
+    })
+    .then(function(data){
+        res.send(data)
+        console.log('You added a restaurant')
     })
     .catch(console.error);
 
@@ -56,9 +57,9 @@ router.post('/:id/hotels', function (req, res, next){
 });
 
 //delete restaurant from specific day
-router.put('/:id/restaurants', function (req, res, next){
+// router.put('/:id/restaurants', function (req, res, next){
 
-});
+// });
 
 //delete activity from specific day
 router.put('/:id/activities', function (req, res, next){

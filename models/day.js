@@ -9,5 +9,5 @@ var Activity = require('./activity');
 var Day = db.define('day', {
   number: Sequelize.INTEGER
 });
-
 module.exports = Day;
+
